@@ -26,6 +26,9 @@ body {
 	<input type='file' multiple /><br/>
 	<img id="image" placeholder="hahaha" style="margin-top:20px;">
 	<button onclick="sendImage()" style="margin-top:20px">upload and test</button>
+	<div id="result">
+		result：<font size="18" id="digit"></font>
+	</div>
 </body>
 </html>
 <script src="/digitalrecognition/js/jquery-3.2.1.min.js"></script>
@@ -50,7 +53,8 @@ body {
 				"img" : $("#image").attr("src").substring($("#image").attr("src").indexOf(",") + 1)
 			},
 			success : function(response) {
-				console.log("upload finished")
+				console.log("upload finished");
+				$("#digit").html(response);
 			},
 			error : function() {
 			}

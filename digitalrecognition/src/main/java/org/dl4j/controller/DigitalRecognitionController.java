@@ -35,6 +35,7 @@ import sun.misc.BASE64Decoder;
 @Controller
 public class DigitalRecognitionController implements InitializingBean {
 	private MultiLayerNetwork net;
+	private MultiLayerNetwork netFood;
 
 	@ResponseBody
 	@RequestMapping("/predict")
@@ -55,9 +56,9 @@ public class DigitalRecognitionController implements InitializingBean {
 
 	private String generateImage(String img) {
 		BASE64Decoder decoder = new BASE64Decoder();
-		//String filePath = WebConstant.WEB_ROOT + "upload/"+UUID.randomUUID().toString()+".png";
+		String filePath = WebConstant.WEB_ROOT + "upload/"+UUID.randomUUID().toString()+".png";
 		//String filePath = "/Users/weijian/Downloads/sem2/try1.png";
-		String filePath = "/home/hduser/upload/digitalRecognition/try1.png";
+		//String filePath = "/home/hduser/upload/digitalRecognition/try1.png";
 		try {
 			byte[] b = decoder.decodeBuffer(img);
 			for (int i = 0; i < b.length; ++i) {
@@ -76,9 +77,9 @@ public class DigitalRecognitionController implements InitializingBean {
 	}
 	
 	private String zoomImage(String filePath){
-		//String imagePath=WebConstant.WEB_ROOT + "upload/"+UUID.randomUUID().toString()+".png";
+		String imagePath=WebConstant.WEB_ROOT + "upload/"+UUID.randomUUID().toString()+".png";
 		//String imagePath = "/Users/weijian/Downloads/sem2/try2.png";
-		String imagePath = "/home/hduser/upload/digitalRecognition/try2.png";
+		//String imagePath = "/home/hduser/upload/digitalRecognition/try2.png";
 		try {
 			BufferedImage bufferedImage = ImageIO.read(new File(filePath));
 			Image image = bufferedImage.getScaledInstance(28, 28, Image.SCALE_SMOOTH);
@@ -96,9 +97,42 @@ public class DigitalRecognitionController implements InitializingBean {
 	@ResponseBody
 	@RequestMapping("/sendImage")
 	public int sendImage(@RequestParam(value = "img") String img) throws Exception {
+		String imagePath= generateFoodImage(img);
+		imagePath= zoomFoodImage(imagePath);
+		DataNormalization scaler = new ImagePreProcessingScaler(0, 1);
+		ImageRecordReader testRR = new ImageRecordReader(28, 28, 1);
+		File testData = new File(imagePath);
+		FileSplit testSplit = new FileSplit(testData, NativeImageLoader.ALLOWED_FORMATS);
+		testRR.initialize(testSplit);
+		DataSetIterator testIter = new RecordReaderDataSetIterator(testRR, 1);
+		testIter.setPreProcessor(scaler);
+		//INDArray array = testIter.next().getFeatureMatrix();
+		INDArray array = testIter.next().getFeatures();
+		return netFood.predict(array)[0];
+	}
+	
+	private String zoomFoodImage(String filePath) {
+		String imagePath=WebConstant.WEB_ROOT + "upload/"+UUID.randomUUID().toString()+".png";
+		//String imagePath = "/Users/weijian/Downloads/sem2/try2.png";
+		//String imagePath = "/home/hduser/upload/digitalRecognition/try2.png";
+		try {
+			BufferedImage bufferedImage = ImageIO.read(new File(filePath));
+			Image image = bufferedImage.getScaledInstance(28, 28, Image.SCALE_SMOOTH);
+			BufferedImage tag = new BufferedImage(28, 28, BufferedImage.TYPE_INT_RGB);
+			Graphics g = tag.getGraphics();
+			g.drawImage(image, 0, 0, null);
+			g.dispose();
+			ImageIO.write(tag, "png",new File(imagePath));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return imagePath;
+	}
+
+	private String generateFoodImage(@RequestParam(value = "img") String img) throws Exception{
 		BASE64Decoder decoder = new BASE64Decoder();
-		//String filePath = WebConstant.WEB_ROOT + "upload/" + UUID.randomUUID().toString() + ".png";
-		String filePath = "/home/hduser/upload/digitalRecognition/upload.png";
+		String filePath = WebConstant.WEB_ROOT + "upload/" + UUID.randomUUID().toString() + ".png";
+		//String filePath = "/home/hduser/upload/digitalRecognition/upload.png";
 		//String filePath = "/Users/weijian/Downloads/sem2/upload.png";
 		try {
 			byte[] b = decoder.decodeBuffer(img);
@@ -114,10 +148,11 @@ public class DigitalRecognitionController implements InitializingBean {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return 0;
+		return filePath;
 	}
 	public void afterPropertiesSet() throws Exception {
 		net = ModelSerializer.restoreMultiLayerNetwork(new File(WebConstant.WEB_ROOT + "model/minist-model2.zip"));
+		netFood = ModelSerializer.restoreMultiLayerNetwork(new File(WebConstant.WEB_ROOT + "model/minist-model4.zip"));
 	}
 
 }
