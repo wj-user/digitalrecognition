@@ -39,8 +39,8 @@ public class DigitalRecognitionController implements InitializingBean {
 	@ResponseBody
 	@RequestMapping("/predict")
 	public int predict(@RequestParam(value = "img") String img) throws Exception {
-		String imagePath= generateImage(img);//将base64图片转化为png图片
-		imagePath= zoomImage(imagePath);//将图片缩小至28*28
+		String imagePath= generateImage(img);
+		imagePath= zoomImage(imagePath);
 		DataNormalization scaler = new ImagePreProcessingScaler(0, 1);
 		ImageRecordReader testRR = new ImageRecordReader(28, 28, 1);
 		File testData = new File(imagePath);
@@ -48,13 +48,16 @@ public class DigitalRecognitionController implements InitializingBean {
 		testRR.initialize(testSplit);
 		DataSetIterator testIter = new RecordReaderDataSetIterator(testRR, 1);
 		testIter.setPreProcessor(scaler);
-		INDArray array = testIter.next().getFeatureMatrix();
+		//INDArray array = testIter.next().getFeatureMatrix();
+		INDArray array = testIter.next().getFeatures();
 		return net.predict(array)[0];
 	}
 
 	private String generateImage(String img) {
 		BASE64Decoder decoder = new BASE64Decoder();
-		String filePath = WebConstant.WEB_ROOT + "upload/"+UUID.randomUUID().toString()+".png";
+		//String filePath = WebConstant.WEB_ROOT + "upload/"+UUID.randomUUID().toString()+".png";
+		//String filePath = "/Users/weijian/Downloads/sem2/try1.png";
+		String filePath = "/home/hduser/upload/digitalRecognition/try1.png";
 		try {
 			byte[] b = decoder.decodeBuffer(img);
 			for (int i = 0; i < b.length; ++i) {
@@ -73,13 +76,15 @@ public class DigitalRecognitionController implements InitializingBean {
 	}
 	
 	private String zoomImage(String filePath){
-		String imagePath=WebConstant.WEB_ROOT + "upload/"+UUID.randomUUID().toString()+".png";
+		//String imagePath=WebConstant.WEB_ROOT + "upload/"+UUID.randomUUID().toString()+".png";
+		//String imagePath = "/Users/weijian/Downloads/sem2/try2.png";
+		String imagePath = "/home/hduser/upload/digitalRecognition/try2.png";
 		try {
 			BufferedImage bufferedImage = ImageIO.read(new File(filePath));
 			Image image = bufferedImage.getScaledInstance(28, 28, Image.SCALE_SMOOTH);
 			BufferedImage tag = new BufferedImage(28, 28, BufferedImage.TYPE_INT_RGB);
 			Graphics g = tag.getGraphics();
-			g.drawImage(image, 0, 0, null); // 绘制处理后的图
+			g.drawImage(image, 0, 0, null);
 			g.dispose();
 			ImageIO.write(tag, "png",new File(imagePath));
 		} catch (Exception e) {
@@ -88,10 +93,31 @@ public class DigitalRecognitionController implements InitializingBean {
 		return imagePath;
 	}
 	
-
-	@Override
+	@ResponseBody
+	@RequestMapping("/sendImage")
+	public int sendImage(@RequestParam(value = "img") String img) throws Exception {
+		BASE64Decoder decoder = new BASE64Decoder();
+		//String filePath = WebConstant.WEB_ROOT + "upload/" + UUID.randomUUID().toString() + ".png";
+		String filePath = "/home/hduser/upload/digitalRecognition/upload.png";
+		//String filePath = "/Users/weijian/Downloads/sem2/upload.png";
+		try {
+			byte[] b = decoder.decodeBuffer(img);
+			for (int i = 0; i < b.length; ++i) {
+				if (b[i] < 0) {
+					b[i] += 256;
+				}
+			}
+			OutputStream out = new FileOutputStream(filePath);
+			out.write(b);
+			out.flush();
+			out.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
 	public void afterPropertiesSet() throws Exception {
-		net = ModelSerializer.restoreMultiLayerNetwork(new File(WebConstant.WEB_ROOT + "model/minist-model.zip"));
+		net = ModelSerializer.restoreMultiLayerNetwork(new File(WebConstant.WEB_ROOT + "model/minist-model2.zip"));
 	}
 
 }

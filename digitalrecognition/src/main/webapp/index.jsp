@@ -23,17 +23,18 @@ body {
 </style>
 <html>
 <head>
-<title>数字识别</title>
+<title>Digital recognition</title>
 </head>
 <body>
 	<canvas id="canvas" width="280" height="280"></canvas>
-	<button onclick="predict()">预测</button>
+	<button onclick="predict()">predict</button>
 	<div id="result">
-		识别结果：<font size="18" id="digit"></font>
+		result：<font size="18" id="digit"></font>
 	</div>
 </body>
 </html>
-<script src="/js/jquery-3.2.1.min.js"></script>
+<script src="/digitalrecognition/js/jquery-3.2.1.min.js"></script>
+<script src="https://raw.githubusercontent.com/caleb531/jcanvas/v21.0.1/dist/min/jcanvas.min.js"></script>
 <script type="text/javascript">
 	/*获取绘制环境*/
 	var canvas = $('#canvas')[0].getContext('2d');
@@ -58,7 +59,7 @@ body {
 	function predict() {
 		var img = $('#canvas')[0].toDataURL("image/png");
 		$.ajax({
-			url : "/digitalRecognition/predict",
+			url : "/digitalrecognition/digitalRecognition/predict",
 			type : "post",
 			data : {
 				"img" : img.substring(img.indexOf(",") + 1)
