@@ -33,7 +33,7 @@ body {
 	</div>
 </body>
 </html>
-<script src="/digitalrecognition/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://raw.githubusercontent.com/caleb531/jcanvas/v21.0.1/dist/min/jcanvas.min.js"></script>
 <script type="text/javascript">
 	/*获取绘制环境*/
