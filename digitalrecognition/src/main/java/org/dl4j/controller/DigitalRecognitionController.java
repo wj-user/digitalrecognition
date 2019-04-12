@@ -97,8 +97,8 @@ public class DigitalRecognitionController implements InitializingBean {
 	@ResponseBody
 	@RequestMapping("/sendImage")
 	public int sendImage(@RequestParam(value = "img") String img) throws Exception {
-		String imagePath= generateFoodImage(img);
-		imagePath= zoomFoodImage(imagePath);
+		String imagePath= generateImage(img);
+		imagePath= zoomImage(imagePath);
 		DataNormalization scaler = new ImagePreProcessingScaler(0, 1);
 		ImageRecordReader testRR = new ImageRecordReader(28, 28, 1);
 		File testData = new File(imagePath);
@@ -111,45 +111,6 @@ public class DigitalRecognitionController implements InitializingBean {
 		return netFood.predict(array)[0];
 	}
 	
-	private String zoomFoodImage(String filePath) {
-		String imagePath=WebConstant.WEB_ROOT + "upload/"+UUID.randomUUID().toString()+".png";
-		//String imagePath = "/Users/weijian/Downloads/sem2/try2.png";
-		//String imagePath = "/home/hduser/upload/digitalRecognition/try2.png";
-		try {
-			BufferedImage bufferedImage = ImageIO.read(new File(filePath));
-			Image image = bufferedImage.getScaledInstance(28, 28, Image.SCALE_SMOOTH);
-			BufferedImage tag = new BufferedImage(28, 28, BufferedImage.TYPE_INT_RGB);
-			Graphics g = tag.getGraphics();
-			g.drawImage(image, 0, 0, null);
-			g.dispose();
-			ImageIO.write(tag, "png",new File(imagePath));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return imagePath;
-	}
-
-	private String generateFoodImage(@RequestParam(value = "img") String img) throws Exception{
-		BASE64Decoder decoder = new BASE64Decoder();
-		String filePath = WebConstant.WEB_ROOT + "upload/" + UUID.randomUUID().toString() + ".png";
-		//String filePath = "/home/hduser/upload/digitalRecognition/upload.png";
-		//String filePath = "/Users/weijian/Downloads/sem2/upload.png";
-		try {
-			byte[] b = decoder.decodeBuffer(img);
-			for (int i = 0; i < b.length; ++i) {
-				if (b[i] < 0) {
-					b[i] += 256;
-				}
-			}
-			OutputStream out = new FileOutputStream(filePath);
-			out.write(b);
-			out.flush();
-			out.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return filePath;
-	}
 	public void afterPropertiesSet() throws Exception {
 		net = ModelSerializer.restoreMultiLayerNetwork(new File(WebConstant.WEB_ROOT + "model/minist-model2.zip"));
 		netFood = ModelSerializer.restoreMultiLayerNetwork(new File(WebConstant.WEB_ROOT + "model/minist-model4.zip"));
