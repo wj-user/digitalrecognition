@@ -59,6 +59,7 @@ public class DigitalRecognitionController implements InitializingBean {
 		String filePath ="/home/hduser/upload/"+UUID.randomUUID().toString()+".png";
 		//String filePath = "/Users/weijian/Downloads/sem2/try1.png";
 		//String filePath = "/home/hduser/upload/digitalRecognition/try1.png";
+		//String filePath = WebConstant.WEB_ROOT + "/upload/"+UUID.randomUUID().toString()+".png";
 		try {
 			byte[] b = decoder.decodeBuffer(img);
 			for (int i = 0; i < b.length; ++i) {
@@ -80,6 +81,7 @@ public class DigitalRecognitionController implements InitializingBean {
 		String imagePath="/home/hduser/upload/"+UUID.randomUUID().toString()+".png";
 		//String imagePath = "/Users/weijian/Downloads/sem2/try2.png";
 		//String imagePath = "/home/hduser/upload/digitalRecognition/try2.png";
+		//String imagePath = WebConstant.WEB_ROOT + "/upload/"+UUID.randomUUID().toString()+".png";
 		try {
 			BufferedImage bufferedImage = ImageIO.read(new File(filePath));
 			Image image = bufferedImage.getScaledInstance(28, 28, Image.SCALE_SMOOTH);
