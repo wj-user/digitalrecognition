@@ -1,0 +1,144 @@
+<!doctype html>
+<meta charset="UTF-8">
+<style type="text/css">
+body {
+	padding: 0;
+	margin: 0;
+	background: white;
+}
+
+#canvasborder{
+	position:relatvie;
+	padding:40px;
+	border-style:solid;
+	border-width:1px;
+	border-color:blue;
+	margin: auto;
+}
+#canvasarea{
+
+
+    padding:40px;
+	margin: auto;
+	
+}
+#canvas {
+	position: relative;
+    padding:10px;
+    position:realative;
+    left:250px;	
+    top:50px;
+	text-align: center;
+
+}
+
+#canvas>span {
+	color: white;
+	font-size: 14px;
+}
+
+#result {
+	position: relative;
+	top:-200px;
+	left:1000px;
+}
+
+#predict{
+	
+	margin: auto;
+	text-align: center;
+	position: relative;
+	top: 150px;
+	left: 450px;
+}
+#resultarea{
+  	position:relatvie;
+  	width: 300px;
+    height: 100px;
+    border-style:solid;
+	border-width:2px;
+    border-color:red;
+}
+#digit{
+	position:realative;
+	top:100px;
+	left:100px;
+}
+</style>
+<html>
+<head>
+	<header class="mui-bar mui-bar-nav">
+		<h1 class="mui-title">Group18-Number Recognition</h1>
+		<a class="mui-icon mui-icon-undo " href="/digitalrecognition/home.html"></a>
+	</header>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link href="/digitalrecognition/js/mui.css" rel="stylesheet" />
+</head>
+
+<body>
+	<div id = "canvasborder">
+		<div id = "canvasarea">
+		<canvas id="canvas" width="280" height="280"></canvas>
+		<button type="button" class="mui-btn mui-btn-blue " onclick="predict()" id="predict" style="margin-top:20px">预测</button>
+		<div id="result">
+			The recognition number is:
+			<div id= "resultarea">
+			<div id="digit" style="font-size:50px;line-height:50px;"></div>
+			</div>
+			
+		</div>
+		</div>
+		
+	</div>
+	
+</body>
+</html>
+<script src="/digitalrecognition/js/jquery-3.2.1.min.js"></script>
+<script src="https://raw.githubusercontent.com/caleb531/jcanvas/v21.0.1/dist/min/jcanvas.min.js"></script>
+
+
+
+<script type="text/javascript">
+	/*获取绘制环境*/
+	var canvas = $('#canvas')[0].getContext('2d');
+	canvas.strokeStyle = "white";//线条的颜色
+	canvas.lineWidth = 10;//线条粗细
+	canvas.fillStyle = 'black'
+	canvas.fillRect(0, 0, 280, 280);
+	$('#canvas').on('mousedown', function() {
+		/*开始绘制*/
+		canvas.beginPath();
+		/*设置动画绘制起点坐标*/
+		//canvas.moveTo(event.pageX - 300, event.pageY - 100);
+		canvas.moveTo(event.offsetX-10,event.offsetY-10);
+		$('#canvas').on('mousemove', function() {
+			/*设置下一个点坐标*/
+			//canvas.lineTo(event.pageX - 300, event.pageY - 100);
+			canvas.lineTo( event.offsetX-10, event.offsetY-10);
+			/*画线*/
+			canvas.stroke();
+		});
+	}).on('mouseup', function() {
+		$('#canvas').off('mousemove');
+	});
+	function predict() {
+		var img = $('#canvas')[0].toDataURL("image/png");
+		$.ajax({
+			url : "/digitalrecognition/digitalRecognition/predict",
+			type : "post",
+			data : {
+				"img" : img.substring(img.indexOf(",") + 1)
+			},
+			success : function(response) {
+				$("#digit").html(response);
+			},
+			error : function() {
+			}
+		});
+	}
+</script>
+
+
+<script src="/digitalrecognition/js/jquery-3.2.1.min.js"></script>
+<script src="/digitalrecognition/js/mui.min.js"></script>  
+<link href="/digitalrecognition/js/mui.min.css" rel="stylesheet" />  
