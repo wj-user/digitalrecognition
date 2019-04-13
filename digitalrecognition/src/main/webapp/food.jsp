@@ -31,9 +31,10 @@ body {
 	</div>
 </body>
 </html>
-<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/digitalrecognition/js/jquery-3.2.1.min.js"></script>
 <!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> -->
 <script>
+
   document.querySelector('input').onchange = function() {
     var reader = new FileReader();
 

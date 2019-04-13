@@ -8,12 +8,16 @@ body {
 }
 
 #canvasborder{
-	position:relatvie;
-	padding:40px;
+	position:absolute;
 	border-style:solid;
-	border-width:1px;
-	border-color:blue;
+	border-width:4px;
 	margin: auto;
+	border-radius:25px;
+	padding:0px 0px 0px 0px;
+	border-color:#dcedf7;
+	left:30px;
+	right:30px;
+	top:70px;
 }
 #canvasarea{
 
@@ -41,6 +45,7 @@ body {
 	position: relative;
 	top:-200px;
 	left:1000px;
+	font-size:130%;
 }
 
 #predict{
@@ -53,22 +58,33 @@ body {
 }
 #resultarea{
   	position:relatvie;
-  	width: 300px;
+  	width: 100px;
     height: 100px;
     border-style:solid;
 	border-width:2px;
     border-color:red;
+    margin-top:10px;
+    
 }
 #digit{
 	position:realative;
 	top:100px;
 	left:100px;
 }
+#mention{
+	height: 60px;
+	position: relative;
+	top:0px;
+	background:#dcedf7 ;
+	font-size: 130%;
+	color:#3e7cb5;
+	padding:25px;
+}
 </style>
 <html>
 <head>
 	<header class="mui-bar mui-bar-nav">
-		<h1 class="mui-title">Group18-Number Recognition</h1>
+		<h1 class="mui-title" style="color: #70b2fb font-size:110%;">Group18-Number Recognition</h1>
 		<a class="mui-icon mui-icon-undo " href="/digitalrecognition/home.html"></a>
 	</header>
 	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
@@ -76,25 +92,32 @@ body {
 </head>
 
 <body>
-	<div id = "canvasborder">
-		<div id = "canvasarea">
-		<canvas id="canvas" width="280" height="280"></canvas>
-		<button type="button" class="mui-btn mui-btn-blue " onclick="predict()" id="predict" style="margin-top:20px">预测</button>
-		<div id="result">
-			The recognition number is:
-			<div id= "resultarea">
-			<div id="digit" style="font-size:50px;line-height:50px;"></div>
-			</div>
-			
+	
+	<div class= mui-content>
+		
+		<div id = "canvasborder">
+		<div id ="mention" >
+			Please write a number:
 		</div>
+			<div id = "canvasarea">
+			<canvas id="canvas" width="280" height="280"></canvas>
+			<button type="button" class="mui-btn mui-btn-blue " onclick="predict()" id="predict" style="margin-top:20px">Detect</button>
+			<div id="result">
+				The recognized number is:
+				<div id= "resultarea">
+					<div id="digit" style="font-size:50px;line-height:50px;"></div>
+				</div>
+			
+			</div>
 		</div>
 		
 	</div>
-	
+	</div>
 </body>
 </html>
+<script src="/digitalrecognition/js/jquery-3.2.1.min.js"></script>
 <script src="https://raw.githubusercontent.com/caleb531/jcanvas/v21.0.1/dist/min/jcanvas.min.js"></script>
-<script type="text/javascript" src="/digitalrecognition/js/jquery-3.2.1.min.js"></script>
+
 
 
 <script type="text/javascript">
@@ -138,6 +161,6 @@ body {
 </script>
 
 
-
+<script src="/digitalrecognition/js/jquery-3.2.1.min.js"></script>
 <script src="/digitalrecognition/js/mui.min.js"></script>  
 <link href="/digitalrecognition/js/mui.min.css" rel="stylesheet" />  

@@ -5,13 +5,14 @@
 body {
 	padding: 0;
 	margin: 0;
-	background: white;
+	background: #FFFFFF;
+	
 }
 
 
 #result {
 	position: relative;
-	top:-300px;
+	top:-230px;
 	left:1200px;
 	
 }
@@ -36,16 +37,30 @@ body {
 	top:50px;
 }
 #uploadborder{
-	position:relatvie;
-	padding:40px;
+	position:absolute;
+	border-radius:25px;
+	padding:0px 0px 0px 0px;
 	border-style:solid;
-	border-width:1px;
-	border-color:blue;
+	border-width:4px;
+	border-color:#dcedf7;
+	left:30px;
+	right:30px;
+	top:70px;
+	
 	margin: auto;
 }
 #image{
-	width :500px;
-	height:500px;
+	width: 400px;
+	height:400px;
+}
+#mention{
+	height: 60px;
+	position: relative;
+	top:0px;
+	background:#dcedf7 ;
+	font-size: 130%;
+	color:#3e7cb5;
+	padding:25px;
 }
 </style>
 
@@ -53,11 +68,11 @@ body {
 <html>
 <head>
 	<header class="mui-bar mui-bar-nav">
-		<h1 class="mui-title">Group18-Food image Detection</h1>
+		<h1 class="mui-title" style="color: #70b2fb; font-size:110%;">Group18-Food image Detection</h1>
 		<a class="mui-icon mui-icon-undo " href="/digitalrecognition/home.html"></a>
 	</header>
 	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-	<link href="/digitalrecognition/js/mui.css" rel="stylesheet" />
+	<link href="css/mui.css" rel="stylesheet" />
 </head>
 
 
@@ -66,22 +81,31 @@ body {
 	<script type="text/javascript">
 		mui.init()
 	</script>
-	
-	<div id = "uploadborder">
-		<div id ="uploadImage">
-			<input type='file' multiple /><br/>
-			<img id="image" placeholder="hahaha" style="margin-top:20px;">
-			<button onclick="sendImage()" type="button" class="mui-btn mui-btn-blue" id="upload">upload and test</button>
-		</div>
-		<div id="result">
-			This image is:：
-			<div id= "resultarea">
-			<div id="digit" style="font-size:50px;line-height:50px;"></div>
+	<div class= mui-content>
+		<div id = "uploadborder">
+			<div id ="mention" >
+			Please upload image:
 			</div>
 			
+			<div id ="uploadImage">
+				<input type='file' multiple /><br/>
+				<img id="image" placeholder="hahaha" style="margin-top:20px;">
+				<button onclick="sendImage()" type="button" class="mui-btn mui-btn-blue" id="upload">upload and detect</button>
+			</div>
+			<div>
+				
+			</div>
+			<div id="result">
+				This image is:：
+				<div id= "resultarea">
+				<div id="digit" style="font-size:50px;line-height:50px;"></div>
+				</div>
+				
+			</div>
+		
 		</div>
-	
 	</div>
+	
 	
 </body>
 </html>
@@ -136,6 +160,7 @@ body {
 </script>
 
 
-<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+<script src="/digitalrecognition/js/jquery-3.2.1.min.js"></script>
 <script src="/digitalrecognition/js/mui.min.js"></script>  
 <link href="/digitalrecognition/js/mui.min.css" rel="stylesheet" />  
