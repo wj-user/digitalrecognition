@@ -56,8 +56,8 @@ public class DigitalRecognitionController implements InitializingBean {
 
 	private String generateImage(String img) {
 		BASE64Decoder decoder = new BASE64Decoder();
-		String filePath = WebConstant.WEB_ROOT + "upload/"+UUID.randomUUID().toString()+".png";
-		//String filePath = "D:/CloudProject/try1.png";
+		//String filePath = WebConstant.WEB_ROOT + "upload/"+UUID.randomUUID().toString()+".png";
+		String filePath = "D:/CloudProject/try1.png";
 		//String filePath = "/Users/weijian/Downloads/sem2/try1.png";
 		//String filePath = "/home/hduser/upload/digitalRecognition/try1.png";
 		try {
@@ -76,10 +76,10 @@ public class DigitalRecognitionController implements InitializingBean {
 		}
 		return filePath;
 	}
-
+	
 	private String zoomImage(String filePath){
-		String imagePath=WebConstant.WEB_ROOT + "upload/"+UUID.randomUUID().toString()+".png";
-		//String imagePath ="D:/CloudProject/try2.png";
+		//String imagePath=WebConstant.WEB_ROOT + "upload/"+UUID.randomUUID().toString()+".png";
+		String imagePath ="D:/CloudProject/try2.png";
 		//String imagePath = "/Users/weijian/Downloads/sem2/try2.png";
 		//String imagePath = "/home/hduser/upload/digitalRecognition/try2.png";
 		try {
@@ -95,7 +95,7 @@ public class DigitalRecognitionController implements InitializingBean {
 		}
 		return imagePath;
 	}
-
+	
 	@ResponseBody
 	@RequestMapping("/sendImage")
 	public int sendImage(@RequestParam(value = "img") String img) throws Exception {
@@ -112,10 +112,10 @@ public class DigitalRecognitionController implements InitializingBean {
 		INDArray array = testIter.next().getFeatures();
 		return netFood.predict(array)[0];
 	}
-
+	
 	private String zoomFoodImage(String filePath) {
-		String imagePath=WebConstant.WEB_ROOT + "upload/"+UUID.randomUUID().toString()+".png";
-		//String imagePath = "D:/CloudProject/try2.png";
+		//String imagePath=WebConstant.WEB_ROOT + "upload/"+UUID.randomUUID().toString()+".png";
+		String imagePath = "D:/CloudProject/try2.png";
 		//String imagePath = "/Users/weijian/Downloads/sem2/try2.png";
 		//String imagePath = "/home/hduser/upload/digitalRecognition/try2.png";
 		try {
@@ -134,8 +134,8 @@ public class DigitalRecognitionController implements InitializingBean {
 
 	private String generateFoodImage(@RequestParam(value = "img") String img) throws Exception{
 		BASE64Decoder decoder = new BASE64Decoder();
-		String filePath = WebConstant.WEB_ROOT + "upload/" + UUID.randomUUID().toString() + ".png";
-		//String filePath = "D:/CloudProject/try1.png";
+		//String filePath = WebConstant.WEB_ROOT + "upload/" + UUID.randomUUID().toString() + ".png";
+		String filePath = "D:/CloudProject/try1.png";
 		//String filePath = "/home/hduser/upload/digitalRecognition/upload.png";
 		//String filePath = "/Users/weijian/Downloads/sem2/upload.png";
 		try {
@@ -155,10 +155,8 @@ public class DigitalRecognitionController implements InitializingBean {
 		return filePath;
 	}
 	public void afterPropertiesSet() throws Exception {
-		//net = ModelSerializer.restoreMultiLayerNetwork(new File(WebConstant.WEB_ROOT + "model/minist-model2.zip"));
-		//netFood = ModelSerializer.restoreMultiLayerNetwork(new File(WebConstant.WEB_ROOT + "model/minist-model4.zip"));
-		net = ModelSerializer.restoreMultiLayerNetwork(new File(WebConstant.WEB_ROOT + "model/minist-model2.zip"));
-		netFood = ModelSerializer.restoreMultiLayerNetwork(new File(WebConstant.WEB_ROOT + "model/minist-model4.zip"));
+		net = ModelSerializer.restoreMultiLayerNetwork(new File("D:/CloudProject/model/minist-model2.zip"));
+		netFood = ModelSerializer.restoreMultiLayerNetwork(new File("D:/CloudProject/model/minist-model4.zip"));
 	}
 
 }
