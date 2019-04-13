@@ -1,0 +1,141 @@
+<!doctype html>
+
+<meta charset="UTF-8">
+<style type="text/css">
+body {
+	padding: 0;
+	margin: 0;
+	background: white;
+}
+
+
+#result {
+	position: relative;
+	top:-300px;
+	left:1200px;
+	
+}
+#resultarea{
+  	position:relatvie;
+  	width: 300px;
+    height: 100px;
+    border-style:solid;
+	border-width:2px;
+    border-color:red;
+}
+
+#upload{
+  margin-top:20px;
+  top:200px;
+  left:200px;
+}
+#uploadImage{
+	position:relative;
+	padding:10px;
+	left:200px;
+	top:50px;
+}
+#uploadborder{
+	position:relatvie;
+	padding:40px;
+	border-style:solid;
+	border-width:1px;
+	border-color:blue;
+	margin: auto;
+}
+#image{
+	width :500px;
+	height:500px;
+}
+</style>
+
+
+<html>
+<head>
+	<header class="mui-bar mui-bar-nav">
+		<h1 class="mui-title">Group18-Food image Detection</h1>
+		<a class="mui-icon mui-icon-undo " href="/digitalrecognition/home.html"></a>
+	</header>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link href="/digitalrecognition/js/mui.css" rel="stylesheet" />
+</head>
+
+
+<body>
+	<script src="js/mui.js"></script>
+	<script type="text/javascript">
+		mui.init()
+	</script>
+	
+	<div id = "uploadborder">
+		<div id ="uploadImage">
+			<input type='file' multiple /><br/>
+			<img id="image" placeholder="hahaha" style="margin-top:20px;">
+			<button onclick="sendImage()" type="button" class="mui-btn mui-btn-blue" id="upload">upload and test</button>
+		</div>
+		<div id="result">
+			This image is:：
+			<div id= "resultarea">
+			<div id="digit" style="font-size:50px;line-height:50px;"></div>
+			</div>
+			
+		</div>
+	
+	</div>
+	
+</body>
+</html>
+
+
+
+
+<script>
+
+	var dict = ['apple pie', 
+	'bab back ribs', 
+	'baklava', 
+	'beef carpaccio', 
+	'beef tartare', 
+	'beet salad', 
+	'beignets', 
+	'bibimbap', 
+	'bread pudding', 
+	'breakfast burrito', 
+	'bruschetta'];
+
+
+  document.querySelector('input').onchange = function() {
+    var reader = new FileReader();
+
+    reader.onload = function() {
+       var dataURL = reader.result;
+      $("#image").attr("src",dataURL);
+    };
+
+    reader.readAsDataURL(this.files[0]);
+  };
+  function sendImage() {
+		$.ajax({
+			url : "digitalRecognition/sendImage",
+			type : "post",
+			data : {
+				"img" : $("#image").attr("src").substring($("#image").attr("src").indexOf(",") + 1)
+			},
+			success : function(response) {
+				console.log("upload finished");
+				$("#digit").html(dict[response]);
+			},
+			error : function() {
+			}
+		});
+	}
+</script>
+<script src="/digitalrecognition/js/mui.js"></script>
+<script type="text/javascript">
+		mui.init()
+</script>
+
+
+<script src="/digitalrecognition/js/jquery-3.2.1.min.js"></script>
+<script src="/digitalrecognition/js/mui.min.js"></script>  
+<link href="/digitalrecognition/js/mui.min.css" rel="stylesheet" />  
