@@ -33,7 +33,7 @@ body {
 	</div>
 </body>
 </html>
-<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/digitalrecognition/js/jquery-3.2.1.min.js"></script>
 <script src="https://raw.githubusercontent.com/caleb531/jcanvas/v21.0.1/dist/min/jcanvas.min.js"></script>
 <script type="text/javascript">
 	/*获取绘制环境*/
@@ -47,6 +47,7 @@ body {
 		canvas.beginPath();
 		/*设置动画绘制起点坐标*/
 		canvas.moveTo(event.pageX - 300, event.pageY - 100);
+		
 		$('#canvas').on('mousemove', function() {
 			/*设置下一个点坐标*/
 			canvas.lineTo(event.pageX - 300, event.pageY - 100);
