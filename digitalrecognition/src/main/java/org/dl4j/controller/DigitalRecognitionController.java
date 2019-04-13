@@ -19,11 +19,14 @@ import org.deeplearning4j.datasets.datavec.RecordReaderDataSetIterator;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.deeplearning4j.util.ModelSerializer;
 import org.dl4j.constant.WebConstant;
+import org.dl4j.jdbc.ImageDaoImp;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
 import org.nd4j.linalg.dataset.api.preprocessor.DataNormalization;
 import org.nd4j.linalg.dataset.api.preprocessor.ImagePreProcessingScaler;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,11 +39,14 @@ import sun.misc.BASE64Decoder;
 public class DigitalRecognitionController implements InitializingBean {
 	private MultiLayerNetwork net;
 	private MultiLayerNetwork netFood;
-
+	ApplicationContext context= new ClassPathXmlApplicationContext("org/dl4j/jdbc/Beans.xml");
+	ImageDaoImp imageDaoImp = (ImageDaoImp) context.getBean("ImageDaoImp");
 	@ResponseBody
 	@RequestMapping("/predict")
 	public int predict(@RequestParam(value = "img") String img) throws Exception {
 		String imagePath= generateImage(img);
+		org.dl4j.jdbc.Image image=new org.dl4j.jdbc.Image(imagePath);
+		imageDaoImp.addImage(image);
 		imagePath= zoomImage(imagePath);
 		DataNormalization scaler = new ImagePreProcessingScaler(0, 1);
 		ImageRecordReader testRR = new ImageRecordReader(28, 28, 1);
@@ -100,6 +106,8 @@ public class DigitalRecognitionController implements InitializingBean {
 	@RequestMapping("/sendImage")
 	public int sendImage(@RequestParam(value = "img") String img) throws Exception {
 		String imagePath= generateImage(img);
+		org.dl4j.jdbc.Image image=new org.dl4j.jdbc.Image(imagePath);
+		imageDaoImp.addImage(image);
 		imagePath= zoomImage(imagePath);
 		DataNormalization scaler = new ImagePreProcessingScaler(0, 1);
 		ImageRecordReader testRR = new ImageRecordReader(28, 28, 1);
