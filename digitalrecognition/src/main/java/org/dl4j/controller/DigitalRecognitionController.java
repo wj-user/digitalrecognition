@@ -73,10 +73,10 @@ public class DigitalRecognitionController implements InitializingBean {
 
 	private String generateImage(String img) {
 		BASE64Decoder decoder = new BASE64Decoder();
-		String filePath ="/home/hduser/upload/"+UUID.randomUUID().toString()+".png";
+		//String filePath ="/home/hduser/upload/"+UUID.randomUUID().toString()+".png";
 		//String filePath = "D:CloudProject/try1.png";
 		//String filePath = "/home/hduser/upload/digitalRecognition/try1.png";
-		//String filePath = WebConstant.WEB_ROOT + "/upload/"+UUID.randomUUID().toString()+".png";
+		String filePath = WebConstant.WEB_ROOT + "/upload/"+UUID.randomUUID().toString()+".png";
 		try {
 			byte[] b = decoder.decodeBuffer(img);
 			for (int i = 0; i < b.length; ++i) {
@@ -95,10 +95,10 @@ public class DigitalRecognitionController implements InitializingBean {
 	}
 	
 	private String zoomImage(String filePath){
-		String imagePath="/home/hduser/upload/"+UUID.randomUUID().toString()+".png";
+		//String imagePath="/home/hduser/upload/"+UUID.randomUUID().toString()+".png";
 		//String imagePath = "D:CloudProject/try2.png";
 		//String imagePath = "/home/hduser/upload/digitalRecognition/try2.png";
-		//String imagePath = WebConstant.WEB_ROOT + "/upload/"+UUID.randomUUID().toString()+".png";
+		String imagePath = WebConstant.WEB_ROOT + "/upload/"+UUID.randomUUID().toString()+".png";
 		try {
 			BufferedImage bufferedImage = ImageIO.read(new File(filePath));
 			Image image = bufferedImage.getScaledInstance(28, 28, Image.SCALE_SMOOTH);
@@ -158,10 +158,10 @@ public class DigitalRecognitionController implements InitializingBean {
 	
 	
 	public void afterPropertiesSet() throws Exception {
-		net = ModelSerializer.restoreMultiLayerNetwork(new File(WebConstant.WEB_ROOT + "model/minist-model2.zip"));
-		netFood = ModelSerializer.restoreMultiLayerNetwork(new File(WebConstant.WEB_ROOT + "model/minist-model4.zip"));
-//		net = ModelSerializer.restoreMultiLayerNetwork(new File("D:/CloudProject/git-digitial/digitalrecognition/digitalrecognition/src/main/webapp/model/minist-model2.zip"));
-// = ModelSerializer.restoreMultiLayerNetwork(new File("D:/CloudProject/git-digitial/digitalrecognition/digitalrecognition/src/main/webapp/model/minist-model4.zip"));
+		//net = ModelSerializer.restoreMultiLayerNetwork(new File("/home/hduser/github/digitalrecognition/digitalrecognition/src/main/webapp/model/minist-model2.zip"));
+		//netFood = ModelSerializer.restoreMultiLayerNetwork(new File("/home/hduser/github/digitalrecognition/digitalrecognition/src/main/webapp/model/minist-model4.zip"));
+		net = ModelSerializer.restoreMultiLayerNetwork(new File("C:/Users/45570/workspace/digitalrecognition/digitalrecognition/src/main/webapp/model/minist-model2.zip"));
+        netFood = ModelSerializer.restoreMultiLayerNetwork(new File("C:/Users/45570/workspace/digitalrecognition/digitalrecognition/src/main/webapp/model/minist-model4.zip"));
 	}
 
 }
