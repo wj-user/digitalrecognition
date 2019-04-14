@@ -12,8 +12,8 @@ body {
 
 #result {
 	position: relative;
-	top:-230px;
-	left:1200px;
+	top:-190px;
+	left:750px;
 	
 }
 #resultarea{
@@ -27,8 +27,13 @@ body {
 
 #upload{
   margin-top:20px;
-  top:200px;
+  top:50px;
   left:200px;
+}
+#previous{
+	margin-top:20px;
+	top:-400px;
+	left:822px;
 }
 #uploadImage{
 	position:relative;
@@ -58,9 +63,15 @@ body {
 	position: relative;
 	top:0px;
 	background:#dcedf7 ;
-	font-size: 130%;
+	font-size: 150%;
 	color:#3e7cb5;
 	padding:25px;
+}
+#previousImageArea{
+	position: relative;
+	margin-top :20px;
+	top:200px;
+	left:1300px;
 }
 </style>
 
@@ -72,7 +83,7 @@ body {
 		<a class="mui-icon mui-icon-undo " href="/digitalrecognition/home.html"></a>
 	</header>
 	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-	<link href="css/mui.css" rel="stylesheet" />
+	<link href="/digitalrecognition/mui.css" rel="stylesheet" />
 </head>
 
 
@@ -105,7 +116,28 @@ body {
 		
 		</div>
 	</div>
-	
+	<div id="previousImageArea">
+		<table border="1">
+		
+		<tr>
+			<td><img id="previousImage1" placeholder="hahaha" style="width:100px; height:100px;"></td>
+			<td><img id="previousImage2" placeholder="hahaha" style="width:100px; height:100px;"></td>
+			<td><img id="previousImage3" placeholder="hahaha" style="width:100px; height:100px;"></td>
+			<td><img id="previousImage4" placeholder="hahaha" style="width:100px; height:100px;"></td>
+			<td><img id="previousImage5" placeholder="hahaha" style="width:100px; height:100px;"></td>
+		</tr>
+		
+		<tr>
+			<td><img id="previousImage6" placeholder="hahaha" style="width:100px; height:100px;"></td>
+			<td><img id="previousImage7" placeholder="hahaha" style="width:100px; height:100px;"></td>
+			<td><img id="previousImage8" placeholder="hahaha" style="width:100px; height:100px;"></td>
+			<td><img id="previousImage9" placeholder="hahaha" style="width:100px; height:100px;"></td>
+			<td><img id="previousImage10" placeholder="hahaha" style="width:100px; height:100px;"></td>
+			
+		</tr>
+		</table>
+		</div>
+	</div>
 	
 </body>
 </html>
@@ -153,6 +185,22 @@ body {
 			}
 		});
 	}
+  function getPreviousImage(){
+		$.ajax({
+			url:"digitalRecognition/getPreviousImage",
+			type :"get",
+			
+			success: function(response){
+				console.log("get images finished");
+				var resultjson = JSON.parse(response);
+				$("#previousImage2").attr("src",resutljson);
+				
+			},
+			error :function(){
+				
+			}
+		})
+	}
 </script>
 <script src="/digitalrecognition/js/mui.js"></script>
 <script type="text/javascript">
@@ -163,4 +211,5 @@ body {
 
 <script src="/digitalrecognition/js/jquery-3.2.1.min.js"></script>
 <script src="/digitalrecognition/js/mui.min.js"></script>  
+<script src="/digitalrecognition/js/json2.js"></script>
 <link href="/digitalrecognition/js/mui.min.css" rel="stylesheet" />  
