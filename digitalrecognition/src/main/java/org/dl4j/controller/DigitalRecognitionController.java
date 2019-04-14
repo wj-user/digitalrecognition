@@ -11,6 +11,7 @@ import java.io.OutputStream;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -140,8 +141,14 @@ public class DigitalRecognitionController implements InitializingBean {
 		Gson gson = new Gson();
         try {
         	List<org.dl4j.jdbc.Image> results = imageDaoImp.getLast10();
-        	resultJson = gson.toJson(results);
-        	System.out.println(resultJson);
+        	HashMap<String, String> map = new HashMap<String, String>();
+        	for(int i=0; i<10;i++)
+        	{
+        		String temp = "Image" + String.valueOf(i);
+        		map.put(temp, results.get(i).getImagePath());
+        	}
+        	resultJson = gson.toJson(map);
+        	//System.out.println(resultJson);
         } catch (Exception e) {
             e.printStackTrace();
         }

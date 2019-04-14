@@ -198,8 +198,17 @@ body {
 			
 			success: function(response){
 				console.log("get images finished");
-				var resultjson = JSON.parse(response);
-				$("#previousImage2").attr("src",resutljson);
+				var obj = JSON.parse(response);
+				$("#previousImage1").attr("src",obj.Image9);
+				$("#previousImage2").attr("src",obj.Image8);
+				$("#previousImage3").attr("src",obj.Image7);
+				$("#previousImage4").attr("src",obj.Image6);
+				$("#previousImage5").attr("src",obj.Image5);
+				$("#previousImage6").attr("src",obj.Image4);
+				$("#previousImage7").attr("src",obj.Image3);
+				$("#previousImage8").attr("src",obj.Image2);
+				$("#previousImage9").attr("src",obj.Image1);
+				$("#previousImage10").attr("src",obj.Image0);
 				
 			},
 			error :function(){
