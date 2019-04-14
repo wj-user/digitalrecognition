@@ -197,9 +197,9 @@ body {
 			type :"get",
 			
 			success: function(response){
-				console.log("get images finished");
-				var resultjson = JSON.parse(response);
-				$("#previousImage2").attr("src",resutljson);
+				//console.log("get images finished");
+				//var resultjson = JSON.parse(response);
+				$("#previousImage2").attr("src",response);
 				
 			},
 			error :function(){

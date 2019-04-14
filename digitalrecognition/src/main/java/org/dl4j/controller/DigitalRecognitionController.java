@@ -137,15 +137,17 @@ public class DigitalRecognitionController implements InitializingBean {
 	@RequestMapping(value = "/getPreviousImage", method = RequestMethod.GET )
 	public String getPreviousImage() throws Exception{
 		String resultJson = "";
+		String res = "";
 		Gson gson = new Gson();
         try {
         	List<org.dl4j.jdbc.Image> results = imageDaoImp.getLast10();
         	resultJson = gson.toJson(results);
-        	System.out.println(resultJson);
+        	res = results.get(0).getImagePath();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return resultJson;
+        //return resultJson;
+        return res;
 		
 	}
 	
