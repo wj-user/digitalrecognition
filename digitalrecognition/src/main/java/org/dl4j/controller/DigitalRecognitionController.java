@@ -174,8 +174,8 @@ public class DigitalRecognitionController implements InitializingBean {
 	
 	
 	public void afterPropertiesSet() throws Exception {
-		net = ModelSerializer.restoreMultiLayerNetwork(new File("/home/hduser/github/digitalrecognition/digitalrecognition/src/main/webapp/model/minist-model2.zip"));
-		netFood = ModelSerializer.restoreMultiLayerNetwork(new File("/home/hduser/github/digitalrecognition/digitalrecognition/src/main/webapp/model/minist-model4.zip"));
+		//net = ModelSerializer.restoreMultiLayerNetwork(new File("/home/hduser/github/digitalrecognition/digitalrecognition/src/main/webapp/model/minist-model2.zip"));
+		//netFood = ModelSerializer.restoreMultiLayerNetwork(new File("/home/hduser/github/digitalrecognition/digitalrecognition/src/main/webapp/model/minist-model4.zip"));
 		//net = ModelSerializer.restoreMultiLayerNetwork(new File("C:/Users/45570/workspace/digitalrecognition/digitalrecognition/src/main/webapp/model/minist-model2.zip"));
         //netFood = ModelSerializer.restoreMultiLayerNetwork(new File("C:/Users/45570/workspace/digitalrecognition/digitalrecognition/src/main/webapp/model/minist-model4.zip"));
 	}
