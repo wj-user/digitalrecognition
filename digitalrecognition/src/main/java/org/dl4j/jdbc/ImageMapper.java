@@ -9,7 +9,7 @@ public class ImageMapper implements RowMapper<Image> {
 
 	public Image mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Image image=new Image();
-		image.setImagePath(rs.getString("ImagePath"));
+		image.setImagePath(rs.getString("Base64"));
 		return image;
 	}
 

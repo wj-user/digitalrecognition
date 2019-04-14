@@ -8,7 +8,7 @@ public class MainTest {
 	public static void main(String[] args) {
 		ApplicationContext context= new ClassPathXmlApplicationContext("org/dl4j/jdbc/Beans.xml");
 		ImageDaoImp imageDaoImp = (ImageDaoImp) context.getBean("ImageDaoImp");
-		Image image=new Image("test ImagePath");
+		Image image=new Image("test ImagePath","test Base64");
 		List<Image> images=null;
 		
 		//System.out.println("开始插入");
