@@ -1,25 +1,20 @@
 package org.dl4j.controller;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
 import javax.imageio.ImageIO;
 
-import org.dl4j.jdbc.ImageDao;
-import org.dl4j.jdbc.ImageDaoImp;
-import org.dl4j.jdbc.ImageMapper;
 import org.datavec.api.split.FileSplit;
 import org.datavec.image.loader.NativeImageLoader;
 import org.datavec.image.recordreader.ImageRecordReader;
@@ -27,6 +22,7 @@ import org.deeplearning4j.datasets.datavec.RecordReaderDataSetIterator;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.deeplearning4j.util.ModelSerializer;
 import org.dl4j.constant.WebConstant;
+import org.dl4j.jdbc.ImageDaoImp;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
 import org.nd4j.linalg.dataset.api.preprocessor.DataNormalization;
@@ -41,8 +37,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
+import com.twelvemonkeys.io.enc.Base64Encoder;
 
 import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 @RequestMapping("/digitalRecognition")
 @Controller
@@ -73,10 +71,10 @@ public class DigitalRecognitionController implements InitializingBean {
 
 	private String generateImage(String img) {
 		BASE64Decoder decoder = new BASE64Decoder();
-		//String filePath ="/home/hduser/upload/"+UUID.randomUUID().toString()+".png";
+		String filePath ="/home/hduser/upload/"+UUID.randomUUID().toString()+".png";
 		//String filePath = "D:CloudProject/try1.png";
 		//String filePath = "/home/hduser/upload/digitalRecognition/try1.png";
-		String filePath = WebConstant.WEB_ROOT + "/upload/"+UUID.randomUUID().toString()+".png";
+		//String filePath = WebConstant.WEB_ROOT + "/upload/"+UUID.randomUUID().toString()+".png";
 		try {
 			byte[] b = decoder.decodeBuffer(img);
 			for (int i = 0; i < b.length; ++i) {
@@ -95,10 +93,10 @@ public class DigitalRecognitionController implements InitializingBean {
 	}
 	
 	private String zoomImage(String filePath){
-		//String imagePath="/home/hduser/upload/"+UUID.randomUUID().toString()+".png";
+		String imagePath="/home/hduser/upload/"+UUID.randomUUID().toString()+".png";
 		//String imagePath = "D:CloudProject/try2.png";
 		//String imagePath = "/home/hduser/upload/digitalRecognition/try2.png";
-		String imagePath = WebConstant.WEB_ROOT + "/upload/"+UUID.randomUUID().toString()+".png";
+		//String imagePath = WebConstant.WEB_ROOT + "/upload/"+UUID.randomUUID().toString()+".png";
 		try {
 			BufferedImage bufferedImage = ImageIO.read(new File(filePath));
 			Image image = bufferedImage.getScaledInstance(28, 28, Image.SCALE_SMOOTH);
@@ -145,7 +143,8 @@ public class DigitalRecognitionController implements InitializingBean {
         	for(int i=0; i<10;i++)
         	{
         		String temp = "Image" + String.valueOf(i);
-        		map.put(temp, results.get(i).getImagePath());
+        		//map.put(temp, results.get(i).getImagePath());
+        		map.put(temp, encodeImgageToBase64(new File(results.get(i).getImagePath())));
         	}
         	resultJson = gson.toJson(map);
         	//System.out.println(resultJson);
@@ -155,13 +154,31 @@ public class DigitalRecognitionController implements InitializingBean {
         return resultJson;
 		
 	}
+	public static String encodeImgageToBase64(File imageFile) {// 将图片文件转化为字节数组字符串，并对其进行Base64编码处理
+		ByteArrayOutputStream outputStream = null;
+		try {
+			BufferedImage bufferedImage = ImageIO.read(imageFile);
+			outputStream = new ByteArrayOutputStream();
+			ImageIO.write(bufferedImage, "png", outputStream);
+		} catch (MalformedURLException e1) {
+			e1.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		sun.misc.BASE64Encoder encoder= new sun.misc.BASE64Encoder();
+		return encoder.encode(outputStream.toByteArray());
+		
+	}
+
+	
 	
 	
 	public void afterPropertiesSet() throws Exception {
-		//net = ModelSerializer.restoreMultiLayerNetwork(new File("/home/hduser/github/digitalrecognition/digitalrecognition/src/main/webapp/model/minist-model2.zip"));
-		//netFood = ModelSerializer.restoreMultiLayerNetwork(new File("/home/hduser/github/digitalrecognition/digitalrecognition/src/main/webapp/model/minist-model4.zip"));
-		net = ModelSerializer.restoreMultiLayerNetwork(new File("C:/Users/45570/workspace/digitalrecognition/digitalrecognition/src/main/webapp/model/minist-model2.zip"));
-        netFood = ModelSerializer.restoreMultiLayerNetwork(new File("C:/Users/45570/workspace/digitalrecognition/digitalrecognition/src/main/webapp/model/minist-model4.zip"));
+		net = ModelSerializer.restoreMultiLayerNetwork(new File("/home/hduser/github/digitalrecognition/digitalrecognition/src/main/webapp/model/minist-model2.zip"));
+		netFood = ModelSerializer.restoreMultiLayerNetwork(new File("/home/hduser/github/digitalrecognition/digitalrecognition/src/main/webapp/model/minist-model4.zip"));
+		//netFood = ModelSerializer.restoreMultiLayerNetwork(new File("/Users/weijian/Downloads/sem2/cloud computing/project/digitalrecognition/digitalrecognition/src/main/webapp/model/minist-model.zip"));
+		//net = ModelSerializer.restoreMultiLayerNetwork(new File("C:/Users/45570/workspace/digitalrecognition/digitalrecognition/src/main/webapp/model/minist-model2.zip"));
+        //netFood = ModelSerializer.restoreMultiLayerNetwork(new File("C:/Users/45570/workspace/digitalrecognition/digitalrecognition/src/main/webapp/model/minist-model4.zip"));
 	}
 
 }

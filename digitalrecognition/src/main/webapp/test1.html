@@ -27,8 +27,8 @@ body {
 
 #upload{
   margin-top:20px;
-  top:50px;
-  left:200px;
+  top:-400px;
+  left:800px;
 }
 #previous{
 	margin-top:20px;
@@ -42,7 +42,7 @@ body {
 	top:50px;
 }
 #uploadborder{
-	position:absolute;
+	/* position:absolute; */
 	border-radius:25px;
 	padding:0px 0px 0px 0px;
 	border-style:solid;
@@ -60,7 +60,7 @@ body {
 }
 #mention{
 	height: 60px;
-	position: relative;
+	/* position: relative; */
 	top:0px;
 	background:#dcedf7 ;
 	font-size: 150%;
@@ -68,15 +68,15 @@ body {
 	padding:25px;
 }
 #previousImageArea{
-	position: relative;
+	/* position: relative; */
 	margin-top :20px;
 	top:200px;
 	left:1300px;
+	margin-left: 200px;
 }
 #previousImageButton{
 	margin-top:20px;  
-	top: -400px;
-	left:819px;
+	left:200px;
 }
 </style>
 
@@ -106,11 +106,9 @@ body {
 			<div id ="uploadImage">
 				<input type='file' multiple /><br/>
 				<img id="image" placeholder="hahaha" style="margin-top:20px;">
-				<button onclick="sendImage()" type="button" class="mui-btn mui-btn-blue" id="upload">upload and detect</button>
-			</div>
-			<div>
 				
 			</div>
+			
 			<div id="result">
 				This image is:：
 				<div id= "resultarea">
@@ -118,32 +116,33 @@ body {
 				</div>
 				
 			</div>
-			<button type="button" class="mui-btn mui-btn-blue" id ="previousImageButton" onclick = "getPreviousImage()">previous result</button>
-		
+		<button onclick="sendImage()" type="button" class="mui-btn mui-btn-blue" id="upload">upload and detect</button>
+		</div>
+		<button type="button" class="mui-btn mui-btn-blue" id ="previousImageButton" onclick = "getPreviousImage()">previous result</button>
+		<div id="previousImageArea">
+				<table border="1">
+				
+				<tr>
+					<td><img id="previousImage1" placeholder="hahaha" style="width:100px; height:100px;"></td>
+					<td><img id="previousImage2" placeholder="hahaha" style="width:100px; height:100px;"></td>
+					<td><img id="previousImage3" placeholder="hahaha" style="width:100px; height:100px;"></td>
+					<td><img id="previousImage4" placeholder="hahaha" style="width:100px; height:100px;"></td>
+					<td><img id="previousImage5" placeholder="hahaha" style="width:100px; height:100px;"></td>
+				</tr>
+				
+				<tr>
+					<td><img id="previousImage6" placeholder="hahaha" style="width:100px; height:100px;"></td>
+					<td><img id="previousImage7" placeholder="hahaha" style="width:100px; height:100px;"></td>
+					<td><img id="previousImage8" placeholder="hahaha" style="width:100px; height:100px;"></td>
+					<td><img id="previousImage9" placeholder="hahaha" style="width:100px; height:100px;"></td>
+					<td><img id="previousImage10" placeholder="hahaha" style="width:100px; height:100px;"></td>
+					
+				</tr>
+				</table>
 		</div>
 	</div>
-	<div id="previousImageArea">
-		<table border="1">
-		
-		<tr>
-			<td><img id="previousImage1" placeholder="hahaha" style="width:100px; height:100px;"></td>
-			<td><img id="previousImage2" placeholder="hahaha" style="width:100px; height:100px;"></td>
-			<td><img id="previousImage3" placeholder="hahaha" style="width:100px; height:100px;"></td>
-			<td><img id="previousImage4" placeholder="hahaha" style="width:100px; height:100px;"></td>
-			<td><img id="previousImage5" placeholder="hahaha" style="width:100px; height:100px;"></td>
-		</tr>
-		
-		<tr>
-			<td><img id="previousImage6" placeholder="hahaha" style="width:100px; height:100px;"></td>
-			<td><img id="previousImage7" placeholder="hahaha" style="width:100px; height:100px;"></td>
-			<td><img id="previousImage8" placeholder="hahaha" style="width:100px; height:100px;"></td>
-			<td><img id="previousImage9" placeholder="hahaha" style="width:100px; height:100px;"></td>
-			<td><img id="previousImage10" placeholder="hahaha" style="width:100px; height:100px;"></td>
-			
-		</tr>
-		</table>
-		</div>
-	</div>
+	
+	
 	
 </body>
 </html>
@@ -199,16 +198,16 @@ body {
 			success: function(response){
 				console.log("get images finished");
 				var obj = JSON.parse(response);
-				$("#previousImage1").attr("src",obj.Image9);
-				$("#previousImage2").attr("src",obj.Image8);
-				$("#previousImage3").attr("src",obj.Image7);
-				$("#previousImage4").attr("src",obj.Image6);
-				$("#previousImage5").attr("src",obj.Image5);
-				$("#previousImage6").attr("src",obj.Image4);
-				$("#previousImage7").attr("src",obj.Image3);
-				$("#previousImage8").attr("src",obj.Image2);
-				$("#previousImage9").attr("src",obj.Image1);
-				$("#previousImage10").attr("src",obj.Image0);
+				$("#previousImage1").attr("src","data:image/png;base64,"+obj.Image9);
+				$("#previousImage2").attr("src","data:image/png;base64,"+obj.Image8);
+				$("#previousImage3").attr("src","data:image/png;base64,"+obj.Image7);
+				$("#previousImage4").attr("src","data:image/png;base64,"+obj.Image6);
+				$("#previousImage5").attr("src","data:image/png;base64,"+obj.Image5);
+				$("#previousImage6").attr("src","data:image/png;base64,"+obj.Image4);
+				$("#previousImage7").attr("src","data:image/png;base64,"+obj.Image3);
+				$("#previousImage8").attr("src","data:image/png;base64,"+obj.Image2);
+				$("#previousImage9").attr("src","data:image/png;base64,"+obj.Image1);
+				$("#previousImage10").attr("src","data:image/png;base64,"+obj.Image0);
 				
 			},
 			error :function(){
