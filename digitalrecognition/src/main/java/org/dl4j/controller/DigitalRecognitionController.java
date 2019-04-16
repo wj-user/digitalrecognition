@@ -44,6 +44,11 @@ import com.google.gson.Gson;
 
 import sun.misc.BASE64Decoder;
 
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.*;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.io.IOUtils;
+
 @RequestMapping("/digitalRecognition")
 @Controller
 public class DigitalRecognitionController implements InitializingBean {
@@ -76,7 +81,9 @@ public class DigitalRecognitionController implements InitializingBean {
 		//String filePath ="/home/hduser/upload/"+UUID.randomUUID().toString()+".png";
 		//String filePath = "D:CloudProject/try1.png";
 		//String filePath = "/home/hduser/upload/digitalRecognition/try1.png";
-		String filePath = WebConstant.WEB_ROOT + "/upload/"+UUID.randomUUID().toString()+".png";
+		String fileName = UUID.randomUUID().toString();
+		String filePath = WebConstant.WEB_ROOT + "/upload/"+fileName+".png";
+		String hdfsPath = "hdfs:///data/"+fileName+".png";
 		try {
 			byte[] b = decoder.decodeBuffer(img);
 			for (int i = 0; i < b.length; ++i) {
@@ -88,6 +95,14 @@ public class DigitalRecognitionController implements InitializingBean {
 			out.write(b);
 			out.flush();
 			out.close();
+			//hdfs文件写入
+			Configuration conf = new Configuration();
+	        Path dstPath = new Path(hdfsPath);
+	        FileSystem fs = dstPath.getFileSystem(conf);
+	 
+	        FSDataOutputStream outputStream = fs.create(dstPath);
+	        outputStream.write(b);
+	        outputStream.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -133,7 +148,7 @@ public class DigitalRecognitionController implements InitializingBean {
 	}
 	
 	
-	//返回10个图片路径的json
+	//è¿”å›ž10ä¸ªå›¾ç‰‡è·¯å¾„çš„json
 	@ResponseBody
 	@RequestMapping(value = "/getPreviousImage", method = RequestMethod.GET )
 	public String getPreviousImage() throws Exception{
