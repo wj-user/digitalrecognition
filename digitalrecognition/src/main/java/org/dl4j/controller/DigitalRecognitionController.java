@@ -73,7 +73,7 @@ public class DigitalRecognitionController implements InitializingBean {
 		return net.predict(array)[0];
 	}
 
-	private String generateImage(String img) throws IOException {
+	private String generateImage(String img) {
 		BASE64Decoder decoder = new BASE64Decoder();
 		String fileName = UUID.randomUUID().toString();
 		String filePath = "/home/hduser/upload/" + fileName + ".png";
@@ -81,13 +81,13 @@ public class DigitalRecognitionController implements InitializingBean {
 		//String filePath = "D:CloudProject/try1.png";
 		//String filePath = "/home/hduser/upload/digitalRecognition/try1.png";
 		//String filePath = WebConstant.WEB_ROOT + "/upload/"+UUID.randomUUID().toString()+".png";
-		byte[] b = decoder.decodeBuffer(img);
-		for (int i = 0; i < b.length; ++i) {
-			if (b[i] < 0) {
-				b[i] += 256;
-			}
-		}
 		try {
+			byte[] b = decoder.decodeBuffer(img);
+			for (int i = 0; i < b.length; ++i) {
+				if (b[i] < 0) {
+					b[i] += 256;
+				}
+			}
 			OutputStream out = new FileOutputStream(filePath);
 			out.write(b);
 			out.flush();
@@ -105,36 +105,18 @@ public class DigitalRecognitionController implements InitializingBean {
 			e.printStackTrace();
 		}
 
-//	    try{
-//	    	Configuration conf = new Configuration();
-//	        Path localPath = new Path(filePath);
-//	        Path hdfsPath = new Path(hdfsFilePath);
-//	        FileSystem hdfs = FileSystem.get(conf);
-//	        if(!hdfs.exists(hdfsPath)){
-//	             hdfs.mkdirs(hdfsPath);
-//	         }
-//	         hdfs.copyFromLocalFile(localPath, hdfsPath);
-//	     }catch(Exception e){
-//	         e.printStackTrace();
-//	     }
-		try {
-			Configuration conf = new Configuration();
-			conf.addResource("/opt/hadoop-2.7.5/etc/hadoop/core-site.xml");
-	    	conf.addResource("/opt/hadoop-2.7.5/etc/hadoop/hdfs-site.xml");
-	    	conf.addResource("/opt/hadoop-2.7.5/etc/hadoop/mapred-site.xml");
-			Path dstPath = new Path(hdfsFilePath+"/"+ fileName + ".png");
-			FileSystem fs = dstPath.getFileSystem(conf);
- 
-			FSDataOutputStream outputStream = fs.create(dstPath);
-			outputStream.write(b);
-			outputStream.close();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	    try{
+	    	Configuration conf = new Configuration();
+	        Path localPath = new Path(filePath);
+	        Path hdfsPath = new Path(hdfsFilePath);
+	        FileSystem hdfs = FileSystem.get(conf);
+	        if(!hdfs.exists(hdfsPath)){
+	             hdfs.mkdirs(hdfsPath);
+	         }
+	         hdfs.copyFromLocalFile(localPath, hdfsPath);
+	     }catch(Exception e){
+	         e.printStackTrace();
+	     }
 		return filePath;
 	}
 	
