@@ -41,10 +41,6 @@ import com.twelvemonkeys.io.enc.Base64Encoder;
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.*;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.io.IOUtils;
 
 @RequestMapping("/digitalRecognition")
 @Controller
@@ -75,9 +71,7 @@ public class DigitalRecognitionController implements InitializingBean {
 
 	private String generateImage(String img) {
 		BASE64Decoder decoder = new BASE64Decoder();
-		String fileName = UUID.randomUUID().toString();
-		String filePath = "/home/hduser/upload/" + fileName + ".png";
-		String hdfsFilePath = "hdfs:///data";
+		String filePath ="/home/hduser/upload/"+UUID.randomUUID().toString()+".png";
 		//String filePath = "D:CloudProject/try1.png";
 		//String filePath = "/home/hduser/upload/digitalRecognition/try1.png";
 		//String filePath = WebConstant.WEB_ROOT + "/upload/"+UUID.randomUUID().toString()+".png";
@@ -92,31 +86,9 @@ public class DigitalRecognitionController implements InitializingBean {
 			out.write(b);
 			out.flush();
 			out.close();
-//			//hdfsæ–‡ä»¶å†™å…¥
-//			Configuration conf = new Configuration();
-//	        Path dstPath = new Path(hdfsPath);
-//	        FileSystem fs = dstPath.getFileSystem(conf);
-//	 
-//	        FSDataOutputStream outputStream = fs.create(dstPath);
-//	        outputStream.write(b);
-//	        outputStream.flush();
-//	        outputStream.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-	    try{
-	    	Configuration conf = new Configuration();
-	        Path localPath = new Path(filePath);
-	        Path hdfsPath = new Path(hdfsFilePath);
-	        FileSystem hdfs = FileSystem.get(conf);
-	        if(!hdfs.exists(hdfsPath)){
-	             hdfs.mkdirs(hdfsPath);
-	         }
-	         hdfs.copyFromLocalFile(localPath, hdfsPath);
-	     }catch(Exception e){
-	         e.printStackTrace();
-	     }
 		return filePath;
 	}
 	
@@ -159,7 +131,7 @@ public class DigitalRecognitionController implements InitializingBean {
 	}
 	
 	
-	//è¿”å›ž10ä¸ªå›¾ç‰‡è·¯å¾„çš„json
+	//返回10个图片路径的json
 	@ResponseBody
 	@RequestMapping(value = "/getPreviousImage", method = RequestMethod.GET )
 	public String getPreviousImage() throws Exception{
@@ -182,7 +154,7 @@ public class DigitalRecognitionController implements InitializingBean {
         return resultJson;
 		
 	}
-	public static String encodeImgageToBase64(File imageFile) {// å°†å›¾ç‰‡æ–‡ä»¶è½¬åŒ–ä¸ºå­—èŠ‚æ•°ç»„å­—ç¬¦ä¸²ï¼Œå¹¶å¯¹å…¶è¿›è¡ŒBase64ç¼–ç �å¤„ç�†
+	public static String encodeImgageToBase64(File imageFile) {// 将图片文件转化为字节数组字符串，并对其进行Base64编码处理
 		ByteArrayOutputStream outputStream = null;
 		try {
 			BufferedImage bufferedImage = ImageIO.read(imageFile);
